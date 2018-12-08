@@ -46,7 +46,7 @@ public class DestinationsSearchTest {
     }
 
     @Test
-    public void SearchingDestination(){
+    public void SearchingDestination() throws Exception{
         IndexPage indexPage = new IndexPage(newDriver);
         indexPage.navigate();
         indexPage.destinationSearch(this.destination);

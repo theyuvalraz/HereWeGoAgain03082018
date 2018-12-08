@@ -8,7 +8,6 @@ import org.junit.rules.ExpectedException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.util.concurrent.TimeUnit;
 
 public class TestLearning {
     private WebDriver newDriver;
@@ -43,7 +42,7 @@ public class TestLearning {
     }
 
     @Test
-    public void SearchingDestination(){
+    public void SearchingDestination() throws Exception{
         IndexPage indexPage = new IndexPage(newDriver);
         indexPage.navigate();
         indexPage.destinationSearch("japan");
