@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.function.BiPredicate;
+import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -20,20 +21,14 @@ public class Waiter {
         this.driver = driver;
     }
 
-    public <T, U> boolean WaitForElement(BiPredicate<T,U> predicate){
+    public  <T> T waitForElement(T thing, Function<T, T> function){
         WebDriverWait webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(50).getSeconds());
-        ExpectedCondition condition = (webDriver) -> predicate;
-        webDriverWait
-                .withMessage("Timed out waiting for element").until(condition);
-
-        return true;
+        ExpectedCondition<T>  condition =(driver) -> function.apply(thing);
+        return webDriverWait.withMessage("Timed out waiting for element").until(condition);
     }
 
     public boolean elementContainsString(WebElement element, String str){
-        if(element.getText() == str){
-            return true;
-        }
-        return false;
+        return element.getText().equals(str);
     }
 
 }

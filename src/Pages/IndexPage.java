@@ -13,25 +13,26 @@ import org.openqa.selenium.support.FindBy;
 
 public class IndexPage extends PageBase {
     private Edit destinationSearchField;
+    private Edit originSearchField;
     private ControlBase submitButton;
-
-
 
     public IndexPage(WebDriver driver) {
         super(driver);
         destinationSearchField = new Edit(this, By.id("destination-fsc-search"));
-        submitButton = new ControlBase(this, By.xpath("//*[@id=\"flights-search-controls-root\"]/div/div/form/div[3]/button"));
+        originSearchField = new Edit(this, By.id("origin-fsc-search"));
+        submitButton = new ControlBase(this, By.xpath("//form/div[3]/button"));
     }
 
-    public void destinationSearch(String value) throws Exception{
+    public void destinationSearch(String value){
+        originSearchField.setText("Israel");
         destinationSearchField.setText(value);
         Actions actions = new Actions(getDriver())
-                .sendKeys(Keys.ARROW_DOWN)
                 .sendKeys(Keys.RETURN);
         actions.moveToElement(destinationSearchField.getElement()).perform();
-        new Waiter(getDriver()).WaitForElement((t,y)-> submitButton.exists());
+        Waiter waiter = new Waiter(getDriver());
+        waiter.waitForElement(submitButton, (x)-> x.exists() ? x : null);
+        waiter.waitForElement(submitButton.getElement(), (x) -> x.getText().equals("Search flights") ? x:null);
         submitButton.Click();
-        Thread.sleep(5000);
     }
 
     @Override
